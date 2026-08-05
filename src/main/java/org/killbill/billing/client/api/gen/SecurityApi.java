@@ -25,20 +25,15 @@ import java.util.Objects;
 import org.killbill.billing.client.model.gen.RoleDefinition;
 import org.killbill.billing.client.model.gen.Subject;
 import org.killbill.billing.client.model.gen.UserRoles;
+import org.killbill.billing.client.model.RoleDefinitions;
 import org.killbill.billing.client.model.Strings;
-import java.util.List;
 
-import java.time.format.DateTimeFormatter;
-
-import org.killbill.billing.client.Converter;
 import org.killbill.billing.client.KillBillClientException;
 import org.killbill.billing.client.KillBillHttpClient;
 import org.killbill.billing.client.RequestOptions;
 import org.killbill.billing.client.RequestOptions.RequestOptionsBuilder;
 
 import org.killbill.billing.client.util.Preconditions;
-import org.killbill.billing.client.util.Multimap;
-import org.killbill.billing.client.util.TreeMapSetMultimap;
 
 /**
  *           DO NOT EDIT !!!
@@ -88,6 +83,18 @@ public class SecurityApi {
         final RequestOptions requestOptions = inputOptionsBuilder.build();
 
         return httpClient.doPost(uri, body, UserRoles.class, requestOptions);
+    }
+
+    public RoleDefinitions getAvailableRoles(final RequestOptions inputOptions) throws KillBillClientException {
+
+        final String uri = "/1.0/kb/security/roles";
+
+
+        final RequestOptionsBuilder inputOptionsBuilder = inputOptions.extend();
+        inputOptionsBuilder.withHeader(KillBillHttpClient.HTTP_HEADER_ACCEPT, "application/json");
+        final RequestOptions requestOptions = inputOptionsBuilder.build();
+
+        return httpClient.doGet(uri, RoleDefinitions.class, requestOptions);
     }
 
     public Strings getCurrentUserPermissions(final RequestOptions inputOptions) throws KillBillClientException {
